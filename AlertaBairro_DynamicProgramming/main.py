@@ -1,9 +1,10 @@
 """AlertaBairro - Dynamic Programming (Global Solution 2026.2 - FIAP).
 
 Uso:
-    python main.py            menu interativo
-    python main.py --demo     demonstracao completa, sem interacao
-    python main.py --testes   executa os testes automaticos
+    python main.py              --> menu interativo
+    python main.py --demo       --> demonstracao completa, sem interacao
+    python main.py --testes     --> executa os testes automaticos
+    python main.py --heartbeat  --> verifica periodicamente os componentes
 
 Requer apenas Python 3.9+ (biblioteca padrao, sem instalar nada).
 """
@@ -21,6 +22,7 @@ from alertabairro.priorizacao import (ResultadoPriorizacao, guloso_por_densidade
                                       mochila_tabulacao, planejar_dia,
                                       ranking_por_risco)
 from alertabairro.rota_segura import ComparacaoRotas, RoteadorSeguro
+from alertabairro.heartbeat import demonstrar_heartbeat
 
 LINHA = "=" * 78
 
@@ -187,7 +189,9 @@ def menu() -> None:
         print("3. Comparar eficiencia dos algoritmos")
         print("4. Demonstracao completa")
         print("5. Rodar testes")
+        print("6. Heartbeat (monitoramento local dos algoritmos)")
         print("0. Sair")
+        
         opcao = ler("Escolha: ")
         if opcao in (None, "0"):
             break
@@ -201,6 +205,8 @@ def menu() -> None:
             demo()
         elif opcao == "5":
             rodar_testes()
+        elif opcao == "6":
+            demonstrar_heartbeat()
         else:
             print("Opcao invalida.")
 
@@ -219,6 +225,8 @@ def main(argv: List[str]) -> int:
         demo()
     elif "--testes" in argv:
         return 0 if rodar_testes() else 1
+    elif "--heartbeat" in argv:
+        demonstrar_heartbeat()
     else:
         menu()
     return 0
