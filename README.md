@@ -43,9 +43,10 @@ As técnicas de Programação Dinâmica pedidas na atividade (memoização, tabu
 Requisitos: **Python 3.9 ou superior**. Não há dependências externas (só a biblioteca padrão).
 
 ```bash
-python main.py            # menu interativo
-python main.py --demo     # demonstração completa, sem interação
-python main.py --testes   # roda os 34 testes automáticos
+python main.py              # menu interativo
+python main.py --demo       # demonstração completa, sem interação
+python main.py --testes     # roda os 34 testes automáticos
+python main.py --heartbeat  # Executa o monitoramento local
 ```
 
 Menu: (1) rota segura, (2) priorizar ocorrências do dia, (3) comparar eficiência, (4) demonstração completa, (5) testes.
@@ -57,8 +58,9 @@ Menu: (1) rota segura, (2) priorizar ocorrências do dia, (3) comparar eficiênc
 ├── alertabairro/
 │   ├── grafo.py             grafo viário e Dijkstra
 │   ├── rota_segura.py       comparação de rotas, com cache de consultas
-│   ├── tabulacao_rotas.py  rota segura por programação dinâmica bottom-up
+│   ├── tabulacao_rotas.py   rota segura por programação dinâmica bottom-up
 │   ├── priorizacao.py       mochila 0/1: tabulação, memoização, força bruta e guloso
+│   ├── heartbeat.py         monitoramento heartbeat local
 │   ├── benchmark.py         comparação de eficiência
 │   └── dados.py             mapa, cenários de chuva e ocorrências (simulados)
 ├── tests/                   34 testes automatizados (unittest)
@@ -179,19 +181,9 @@ Nenhum dado pessoal real. Todos os dados são **simulados** e a origem está dec
 - Os pontos alagados são modelados por trecho inteiro de rua, sem gradação de nível de água.
 - A priorização não considera o deslocamento da equipe entre as ocorrências nem dependências entre elas.
 - Os pesos da pontuação de risco são escolhas da equipe e poderiam ser calibrados com dados históricos da Defesa Civil.
+- O heartbeat implementado é uma simulação local de monitoramento dos componentes Python do AlertaBairro
 - Neste projeto o código é uma demonstração em linha de comando. A integração com o aplicativo (tela, banco de dados e API) pertence às outras disciplinas.
 
 ## 8. Uso de IA
 
 Foi usada IA como copiloto para estruturar e revisar o código. Os prompts estão registrados em [`prompts.md`](prompts.md).
-
-
-## 6. Integração e validação final (11/11/2026)
-
-Esta versão preserva a estrutura e a funcionalidade de priorização do trabalho prévio e integra o algoritmo `rota_segura_tabulacao` como **método principal de rota segura**. O Dijkstra permanece como rota padrão e como referência independente nos testes.
-
-**Recorrência da rota:** para cada `k=1..V-1`, inicia-se `dp[k][v] = dp[k-1][v]` e, para cada aresta `(u,v)` de distância `d` e indicador `a` (1 se alagada, 0 caso contrário), compara-se `dp[k][v]` com `dp[k-1][u] + (a,d)`; escolhe-se o menor par lexicográfico. A condição inicial é `dp[0][origem]=(0,0)` e infinito para os demais nós. Os predecessores reconstroem o caminho.
-
-**Validação executada:** `python main.py --testes` — **34 testes aprovados**; `python main.py --demo` — execução concluída. Os seis testes adicionados incluem comparação com Dijkstra para todos os pares de nós nos cenários de chuva, 30 grafos aleatórios reprodutíveis, grafo desconexo, origem igual ao destino, nó inexistente e preferência por trajeto sem alagamento. Testes aprovados não garantem ausência total de defeitos.
-
-**Limitações e segurança:** mapa, distâncias, pontos alagados, ocorrências e tempos são simulados e **não correspondem a ruas reais**. A rota minimiza a quantidade de trechos reportados como alagados e, em caso de empate, a distância; não é garantia de segurança física. Em ausência de rota seca, o sistema avisa para considerar adiar o deslocamento. Não utilizar como orientação de emergência ou navegação real. O MVP web e sua integração com OpenStreetMap/serviço de roteamento estão descritos no Agile, mas **não são implementados neste ZIP**.
