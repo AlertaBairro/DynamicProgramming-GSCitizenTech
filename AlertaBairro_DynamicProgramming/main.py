@@ -194,6 +194,7 @@ def menu() -> None:
         
         opcao = ler("Escolha: ")
         if opcao in (None, "0"):
+            print(f"{LINHA}\nFINALIZANDO SESSÃO - OBRIGADO POR USAR ALERTABAIRRO\n{LINHA}")
             break
         if opcao == "1":
             menu_rota(roteador)
