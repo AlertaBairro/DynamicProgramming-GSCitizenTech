@@ -104,7 +104,7 @@ def demo_priorizacao(horas: float = 5.5) -> None:
     print(f"\nTabulacao e memoizacao chegam ao mesmo valor: "
           f"{tab.pontuacao_total == memo.pontuacao_total}")
     ganho = tab.pontuacao_total - gul.pontuacao_total
-    print(f"Ganho da programacao dinamica sobre o guloso: {ganho:+d} pontos de risco")
+    print(f"Ganho do Dynamic Programming sobre o greddy: {ganho:+d} pontos de risco")
 
 
 def demo_benchmark() -> None:
@@ -184,12 +184,12 @@ def menu() -> None:
     roteador = RoteadorSeguro(construir_grafo())
     while True:
         print(f"\n{LINHA}\nALERTABAIRRO - Dynamic Programming\n{LINHA}")
-        print("1. Rota segura (grafo + tabulacao; Dijkstra como referencia)")
-        print("2. Priorizar ocorrencias do dia (mochila: tabulacao e memoizacao)")
+        print("1. Rota segura (grafo + tabulacao)")
+        print("2. Priorizar ocorrencias do dia (tabulacao e memoizacao)")
         print("3. Comparar eficiencia dos algoritmos")
         print("4. Demonstracao completa")
         print("5. Rodar testes")
-        print("6. Heartbeat (monitoramento local dos algoritmos)")
+        print("6. Heartbeat (monitoramento dos algoritmos)")
         print("0. Sair")
         
         opcao = ler("Escolha: ")
